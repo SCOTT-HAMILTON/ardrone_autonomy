@@ -32,3 +32,6 @@ CMakeLists.txt.user
 
 # Documentations
 docs/_build/
+
+#Nix
+/result*

@@ -13,6 +13,14 @@ find_package(catkin REQUIRED COMPONENTS
     roslint
 )
 
+# Build [patched] ardronelib from an external project
+include_directories(${ARDRONELIB_INCLUDE_DIR}/ARDroneLib)
+include_directories(${ARDRONELIB_INCLUDE_DIR}/ARDroneLib/FFMPEG/Includes)
+include_directories(${ARDRONELIB_INCLUDE_DIR}/ARDroneLib/Soft/Common)
+include_directories(${ARDRONELIB_INCLUDE_DIR}/ARDroneLib/Soft/Lib)
+include_directories(${ARDRONELIB_INCLUDE_DIR}/ARDroneLib/VP_SDK)
+include_directories(${ARDRONELIB_INCLUDE_DIR}/ARDroneLib/VP_SDK/VP_Os/linux)
+
 add_service_files(
     DIRECTORY srv
     FILES
@@ -59,6 +67,9 @@ add_message_files(
     vector31.msg
 )
 
+
+link_directories(${ARDRONELIB_LIBRARY_DIR})
+
 # Generate added messages and services with any dependencies listed here
 generate_messages(DEPENDENCIES geometry_msgs std_msgs)
 
@@ -74,28 +85,7 @@ catkin_package(
     camera_info_manager
 )
 
-# Build [pathced] ardronelib from an external project
-include(ExternalProject)
-ExternalProject_Add(ardronelib
-    GIT_REPOSITORY git://github.com/AutonomyLab/ardronelib.git
-    GIT_TAG 2f987029c55531e4c0119c3600f9c57f935851ed
-    PREFIX ${CATKIN_DEVEL_PREFIX}
-    CONFIGURE_COMMAND echo "No configure"
-    BUILD_COMMAND make
-    INSTALL_COMMAND make install INSTALL_PREFIX=${CATKIN_DEVEL_PREFIX}/lib/ardrone
-    BUILD_IN_SOURCE 1
-)
 
-# Find sdk directories for headers and libraries in devel space
-set(SDK ${CATKIN_DEVEL_PREFIX}/src/ardronelib/ARDroneLib/)
-include_directories(
-    ${SDK}
-    ${SDK}/FFMPEG/Includes
-    ${SDK}/Soft/Common
-    ${SDK}/Soft/Lib
-    ${SDK}/VP_SDK
-    ${SDK}/VP_SDK/VP_Os/linux
-)
 link_directories(${CATKIN_DEVEL_PREFIX}/lib/ardrone)
 
 # Add CATKIN_INCLUDE_DIRS

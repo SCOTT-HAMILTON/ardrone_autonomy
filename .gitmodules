@@ -1,0 +1,3 @@
+[submodule "ardronelib"]
+	path = ardronelib
+	url = git@github.com:SCOTT-HAMILTON/ardronelib.git
